@@ -17,7 +17,17 @@ import (
 type Response events.APIGatewayProxyResponse
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
+func Handler(ctx context.Context, sqsEvent events.SQSEvent) (Response, error) {
+	for _, message := range sqsEvent.Records {
+		fmt.Printf("The message %s for event source %s = %s \n", message.MessageId, message.EventSource, message.Body)
+		fmt.Println("message", message)
+	}
+
+	// recover order from SQS
+	// processRepo := databaseadapterdynamodb.NewDynamoCheckoutRepository()
+	// processService := checkout.NewProcessService(processRepo)
+	// err := processService.ProcessOrder()
+
 	var buf bytes.Buffer
 
 	fmt.Println("Go Process v1.0! Your function executed successfully!")

@@ -27,6 +27,8 @@ provider:
 # you can overwrite defaults here
 #  stage: dev
   region: us-east-1
+  environment:
+        TABLE_NAME: orders-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -34,6 +36,19 @@ provider:
       Resource:
         - Fn::GetAtt:
           - PaymentQueue
+          - Arn
+    - Effect: "Allow"
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - Fn::GetAtt:
+          - OrderDynamoDbTable
           - Arn
 
 # you can add statements to the Lambda function's IAM Role here
@@ -84,6 +99,24 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "PaymentQueue"    
+    OrderDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S  
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: email
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'orders-${opt:stage, self:provider.stage}'
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -2,6 +2,7 @@ package queueadaptersqs
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
 
@@ -28,23 +29,37 @@ func (r *checkoutRepository) SendOrderForProcessing(order *checkout.Order) error
 	// URL to our queue
 	qURL := "https://sqs.us-east-1.amazonaws.com/587998505259/PaymentQueue"
 
+	// ID           string  `json:"id"`
+	// Email        string  `json:"email"`
+	// Amount       float64 `json:"amount"`
+	// Currency     string  `json:"currency"`
+	// ProductID    int64   `json:"productid"`
+	// PaymentToken string  `json:"paymenttoken"`
 	result, err := svc.SendMessage(&sqs.SendMessageInput{
 		DelaySeconds: aws.Int64(10),
 		MessageAttributes: map[string]*sqs.MessageAttributeValue{
-			"Title": &sqs.MessageAttributeValue{
+			"id": &sqs.MessageAttributeValue{
 				DataType:    aws.String("String"),
-				StringValue: aws.String("The Whistler"),
+				StringValue: aws.String(order.ID),
 			},
-			"Author": &sqs.MessageAttributeValue{
+			"email": &sqs.MessageAttributeValue{
 				DataType:    aws.String("String"),
-				StringValue: aws.String("John Grisham"),
+				StringValue: aws.String(order.Email),
 			},
-			"WeeksOn": &sqs.MessageAttributeValue{
+			"amount": &sqs.MessageAttributeValue{
 				DataType:    aws.String("Number"),
-				StringValue: aws.String("6"),
+				StringValue: aws.String(fmt.Sprintf("%f", order.Amount)),
+			},
+			"currency": &sqs.MessageAttributeValue{
+				DataType:    aws.String("String"),
+				StringValue: aws.String(order.Currency),
+			},
+			"productid": &sqs.MessageAttributeValue{
+				DataType:    aws.String("String"),
+				StringValue: aws.String(strconv.Itoa(order.ProductID)),
 			},
 		},
-		MessageBody: aws.String("Information about current NY Times fiction bestseller for week of 12/11/2016."),
+		MessageBody: aws.String("Order"),
 		QueueUrl:    &qURL,
 	})
 
