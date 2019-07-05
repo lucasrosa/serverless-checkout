@@ -8,6 +8,8 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	databaseadapterdynamodb "github.com/lucasrosa/serverless-checkout/adapters/secondary/database"
+	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
 )
 
 // Response is of type APIGatewayProxyResponse since we're leveraging the
@@ -20,13 +22,32 @@ type Response events.APIGatewayProxyResponse
 func Handler(ctx context.Context, sqsEvent events.SQSEvent) (Response, error) {
 	for _, message := range sqsEvent.Records {
 		fmt.Printf("The message %s for event source %s = %s \n", message.MessageId, message.EventSource, message.Body)
-		fmt.Println("message", message)
-	}
+		//jsonBody, err := json.Marshal(message.Body)
+		// if err != nil {
+		// 	fmt.Println("err while parsing", err)
+		// 	//return Response{StatusCode: 500}, err
+		// }
 
-	// recover order from SQS
-	// processRepo := databaseadapterdynamodb.NewDynamoCheckoutRepository()
-	// processService := checkout.NewProcessService(processRepo)
-	// err := processService.ProcessOrder()
+		//fmt.Println("json", string(jsonBody))
+
+		order := checkout.Order{}
+		err := json.Unmarshal([]byte(string(message.Body)), &order)
+
+		if err != nil {
+			fmt.Println("xerr while converting json to struct", err)
+			//return Response{StatusCode: 500}, err
+		}
+		fmt.Println("order", order)
+		//fmt.Println("message", message)
+
+		processRepo := databaseadapterdynamodb.NewDynamoCheckoutRepository()
+		processService := checkout.NewProcessService(processRepo)
+		err = processService.ProcessOrder(&order)
+
+		if err != nil {
+			fmt.Println("error saving in repo", err)
+		}
+	}
 
 	var buf bytes.Buffer
 
