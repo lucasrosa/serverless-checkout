@@ -1,24 +1,27 @@
 # Serverless Checkout 
 
-# Code
-## Business Logic
-### Entities
+##Architecture
+![Alt text](architecture.png?raw=true "Architecture")
+
+## Code
+### Business Logic
+#### Entities
 - Order
 
-### Public
+#### Public
 - Checkout
     - PlaceOrder
 
-## Requirements
-### For the core business logic
+### Requirements
+#### For the core business logic
 - Go 1.12.x
 - Remember to set ```export GO111MODULE=on;```
 
-### For the AWS Serverless adapter
+#### For the AWS Serverless adapter
 - Serverless Framework >=1.28.0
 - An AWS account
 
-## Running tests
+### Running tests
 ```
 // In the root folder of the repository run
 go test ./...
@@ -27,7 +30,7 @@ go test ./...
 go test ./... -cover
 ```
 
-## Building and deploying the AWS Serverless adapter
+### Building and deploying the AWS Serverless adapter
 
 #### How to build
 ```make build```
