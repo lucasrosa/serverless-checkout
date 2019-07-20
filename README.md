@@ -3,6 +3,18 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/lucasrosa/serverless-checkout)](https://goreportcard.com/report/github.com/lucasrosa/serverless-checkout) 
 [![codecov](https://codecov.io/gh/lucasrosa/serverless-checkout/branch/master/graph/badge.svg)](https://codecov.io/gh/lucasrosa/serverless-checkout)
 
+
+Serverless Checkout is an example of a Serverless Microservice that accepts orders from a client and processes them assynchronously by separating the "checkout" and "process" functions using AWS SQS.
+
+The service uses the following AWS services:
+- AWS API Gateway for the REST API
+- AWS Lambda for the processing
+- AWS SQS to separate the 'checkout' and 'process' functions
+- AWS DynamoDB to persist the order
+- AWS CloudWatch to save logs
+
+The entire architecture is described in the [serverless.yml](serverless.yml) file.
+
 ## Architecture
 
 ![Alt text](architecture.png?raw=true "Architecture")
