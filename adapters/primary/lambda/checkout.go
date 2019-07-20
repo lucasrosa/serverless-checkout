@@ -7,6 +7,7 @@ import (
 	"github.com/lucasrosa/serverless-checkout/businesslogic/cart"
 )
 
+// CheckoutAdapter is the interface that defines the entrypoints to this adapter
 type CheckoutAdapter interface {
 	PlaceOrder(request events.APIGatewayProxyRequest) (Response, error)
 }

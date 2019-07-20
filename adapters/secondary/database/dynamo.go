@@ -13,10 +13,12 @@ import (
 
 type checkoutRepository struct{}
 
+// NewDynamoCheckoutRepository instantiates the repository for this adapter
 func NewDynamoCheckoutRepository() cart.ProcessSecondaryPort {
 	return &checkoutRepository{}
 }
 
+// PersistedOrder represents the model for inserting the Order into the database
 type PersistedOrder struct {
 	ID        string  `json:"id"`
 	Email     string  `json:"email"`

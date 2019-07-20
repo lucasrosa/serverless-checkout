@@ -13,6 +13,7 @@ import (
 
 type checkoutRepository struct{}
 
+// NewSQSCheckoutRepository instantiates the repository for this adapter
 func NewSQSCheckoutRepository() cart.CheckoutSecondaryPort {
 	return &checkoutRepository{}
 }

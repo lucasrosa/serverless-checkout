@@ -8,6 +8,7 @@ import (
 
 type checkoutRepository struct{}
 
+// NewMemoryCheckoutRepository instantiates the repository for this adapter
 func NewMemoryCheckoutRepository() cart.CheckoutSecondaryPort {
 	return &checkoutRepository{}
 }
