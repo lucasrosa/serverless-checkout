@@ -1,4 +1,5 @@
 # Serverless Checkout 
+[![Build Status](https://travis-ci.org/lucasrosa/serverless-checkout.svg?branch=master)](https://travis-ci.org/lucasrosa/serverless-checkout) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/lucasrosa/serverless-checkout)](https://goreportcard.com/report/github.com/lucasrosa/serverless-checkout)
 
 ## Architecture
