@@ -1,6 +1,7 @@
 # Serverless Checkout 
 
 ##Architecture
+
 ![Alt text](architecture.png?raw=true "Architecture")
 
 ## Code
