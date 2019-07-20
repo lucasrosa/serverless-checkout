@@ -1,4 +1,5 @@
 # Serverless Checkout 
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasrosa/serverless-checkout)](https://goreportcard.com/report/github.com/lucasrosa/serverless-checkout)
 
 ## Architecture
 
