@@ -8,5 +8,11 @@ matrix:
   - go: master
     env: GO111MODULE=on
 
+before_install:
+ - go get -t -v ./...
+
 script:
-  - make test
+  - go test ./... -race -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
