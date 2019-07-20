@@ -1,4 +1,4 @@
-package checkout
+package cart
 
 type dbPort struct {
 	repo ProcessSecondaryPort

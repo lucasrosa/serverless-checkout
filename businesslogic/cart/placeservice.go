@@ -1,11 +1,11 @@
-package checkout
+package cart
 
 type port struct {
-	repo SecondaryPort
+	repo CheckoutSecondaryPort
 }
 
 // NewCheckoutService receives a Secondary Port of domain and insantiates a Primary Port
-func NewCheckoutService(repo SecondaryPort) PrimaryPort {
+func NewCheckoutService(repo CheckoutSecondaryPort) CheckoutPrimaryPort {
 	return &port{
 		repo,
 	}

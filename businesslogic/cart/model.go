@@ -1,4 +1,4 @@
-package checkout
+package cart
 
 // Order represents a buying order from a customer
 type Order struct {

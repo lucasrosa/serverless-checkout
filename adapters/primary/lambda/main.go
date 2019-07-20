@@ -5,13 +5,13 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 
 	queueadaptersqs "github.com/lucasrosa/serverless-checkout/adapters/secondary/queue/sqs"
-	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
+	"github.com/lucasrosa/serverless-checkout/businesslogic/cart"
 )
 
 // Handler is our lambda handler invoked by the `lambda.Start` function call
 func Handler(request events.APIGatewayProxyRequest) (Response, error) {
 	checkoutRepo := queueadaptersqs.NewSQSCheckoutRepository()
-	checkoutService := checkout.NewCheckoutService(checkoutRepo)
+	checkoutService := cart.NewCheckoutService(checkoutRepo)
 	checkoutAdapter := NewCheckoutAdapter(checkoutService)
 
 	return checkoutAdapter.PlaceOrder(request)

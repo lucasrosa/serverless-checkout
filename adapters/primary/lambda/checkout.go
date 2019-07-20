@@ -2,10 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
+	"github.com/lucasrosa/serverless-checkout/businesslogic/cart"
 )
 
 type CheckoutAdapter interface {
@@ -13,10 +12,10 @@ type CheckoutAdapter interface {
 }
 
 type checkoutAdapter struct {
-	checkoutService checkout.PrimaryPort
+	checkoutService cart.CheckoutPrimaryPort
 }
 
-func NewCheckoutAdapter(checkoutService checkout.PrimaryPort) CheckoutAdapter {
+func NewCheckoutAdapter(checkoutService cart.CheckoutPrimaryPort) CheckoutAdapter {
 	return &checkoutAdapter{
 		checkoutService,
 	}
@@ -29,16 +28,12 @@ func NewCheckoutAdapter(checkoutService checkout.PrimaryPort) CheckoutAdapter {
 type Response events.APIGatewayProxyResponse
 
 func (a *checkoutAdapter) PlaceOrder(request events.APIGatewayProxyRequest) (Response, error) {
-	fmt.Println("Called PlaceOrder on checkout")
 
-	order := checkout.Order{}
+	order := cart.Order{}
 
 	err := json.Unmarshal([]byte(request.Body), &order)
 
 	if err != nil {
-		fmt.Println(order)
-		fmt.Println(request.Body)
-		fmt.Println(err)
 		return Response{StatusCode: 400}, nil
 	}
 

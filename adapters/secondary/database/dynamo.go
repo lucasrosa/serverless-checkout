@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/lucasrosa/serverless-checkout/businesslogic/cart"
 )
 
 type checkoutRepository struct{}
 
-func NewDynamoCheckoutRepository() checkout.ProcessSecondaryPort {
+func NewDynamoCheckoutRepository() cart.ProcessSecondaryPort {
 	return &checkoutRepository{}
 }
 
@@ -26,7 +25,7 @@ type PersistedOrder struct {
 	ProductID int     `json:"productid"`
 }
 
-func (r *checkoutRepository) Save(order *checkout.Order) error {
+func (r *checkoutRepository) Save(order *cart.Order) error {
 	fmt.Println("saving order", order)
 
 	sess, err := session.NewSession(&aws.Config{

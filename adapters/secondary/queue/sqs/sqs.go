@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/lucasrosa/serverless-checkout/businesslogic/checkout"
+	"github.com/lucasrosa/serverless-checkout/businesslogic/cart"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -13,11 +13,11 @@ import (
 
 type checkoutRepository struct{}
 
-func NewSQSCheckoutRepository() checkout.SecondaryPort {
+func NewSQSCheckoutRepository() cart.CheckoutSecondaryPort {
 	return &checkoutRepository{}
 }
 
-func (r *checkoutRepository) SendOrderForProcessing(order *checkout.Order) error {
+func (r *checkoutRepository) SendOrderForProcessing(order *cart.Order) error {
 	fmt.Println(order)
 
 	sess, err := session.NewSession(&aws.Config{
@@ -34,38 +34,10 @@ func (r *checkoutRepository) SendOrderForProcessing(order *checkout.Order) error
 		return err
 	}
 
-	// ID           string  `json:"id"`
-	// Email        string  `json:"email"`
-	// Amount       float64 `json:"amount"`
-	// Currency     string  `json:"currency"`
-	// ProductID    int64   `json:"productid"`
-	// PaymentToken string  `json:"paymenttoken"`
 	result, err := svc.SendMessage(&sqs.SendMessageInput{
 		DelaySeconds: aws.Int64(10),
-		// MessageAttributes: map[string]*sqs.MessageAttributeValue{
-		// 	"id": &sqs.MessageAttributeValue{
-		// 		DataType:    aws.String("String"),
-		// 		StringValue: aws.String(order.ID),
-		// 	},
-		// 	"email": &sqs.MessageAttributeValue{
-		// 		DataType:    aws.String("String"),
-		// 		StringValue: aws.String(order.Email),
-		// 	},
-		// 	"amount": &sqs.MessageAttributeValue{
-		// 		DataType:    aws.String("Number"),
-		// 		StringValue: aws.String(fmt.Sprintf("%f", order.Amount)),
-		// 	},
-		// 	"currency": &sqs.MessageAttributeValue{
-		// 		DataType:    aws.String("String"),
-		// 		StringValue: aws.String(order.Currency),
-		// 	},
-		// 	"productid": &sqs.MessageAttributeValue{
-		// 		DataType:    aws.String("String"),
-		// 		StringValue: aws.String(strconv.Itoa(order.ProductID)),
-		// 	},
-		// },
-		MessageBody: aws.String(string(orderJson)),
-		QueueUrl:    &qURL,
+		MessageBody:  aws.String(string(orderJson)),
+		QueueUrl:     &qURL,
 	})
 
 	if err != nil {
