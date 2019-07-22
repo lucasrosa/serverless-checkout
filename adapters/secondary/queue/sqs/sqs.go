@@ -28,6 +28,7 @@ func (r *checkoutRepository) SendOrderForProcessing(order *cart.Order) error {
 	svc := sqs.New(sess)
 
 	// URL to our queue
+	// FIXME: make this dynamic
 	qURL := "https://sqs.us-east-1.amazonaws.com/587998505259/PaymentQueue"
 
 	orderJson, err := json.Marshal(order)

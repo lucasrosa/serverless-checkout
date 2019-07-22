@@ -28,23 +28,27 @@ func NewCheckoutAdapter(checkoutService cart.CheckoutPrimaryPort) CheckoutAdapte
 // https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
 type Response events.APIGatewayProxyResponse
 
+// PlaceOrder receives the request, processes it and returns a Response or an error
 func (a *checkoutAdapter) PlaceOrder(request events.APIGatewayProxyRequest) (Response, error) {
 
+	// Verifying the body of the request
 	order := cart.Order{}
-
 	err := json.Unmarshal([]byte(request.Body), &order)
-
 	if err != nil {
 		return Response{StatusCode: 400}, nil
 	}
 
+	// Processing order
 	err = a.checkoutService.PlaceOrder(&order)
-
 	if err != nil {
 		return Response{StatusCode: 502}, err
 	}
 
-	resp := Response{
+	return successfulResponse(), nil
+}
+
+func successfulResponse() Response {
+	return Response{
 		StatusCode:      201,
 		IsBase64Encoded: false,
 		Headers: map[string]string{
@@ -55,6 +59,4 @@ func (a *checkoutAdapter) PlaceOrder(request events.APIGatewayProxyRequest) (Res
 			"Access-Control-Allow-Headers":     "application/json",
 		},
 	}
-
-	return resp, nil
 }
