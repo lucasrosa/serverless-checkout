@@ -43,6 +43,7 @@ The code follows the "Hexagonal Architecture" pattern, also know as "Ports and A
 
 #### 1. Installing the requirements
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+- Configuring your [AWS account locally](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
 - [Go installation guide](https://golang.org/doc/install)
 - [NPM/Node](https://nodejs.org/en/)
 - [Serverless Framework installation](https://serverless.com/framework/docs/getting-started/)
@@ -54,7 +55,6 @@ The code follows the "Hexagonal Architecture" pattern, also know as "Ports and A
 ```cd serverless-checkout```
 
 #### 4. Deploying the service
-Don't forget to configure your [AWS account locally](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
 ```make deploy```
 
 **IMPORTANT:** Once you deploy the service, the Lambda attached to the SQS Queue will keep making requests behind the scene and you will be charged by "EmptyReceives". It is covered by the free tier but once you add more services you have to watch it carefully. See [this](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs-example.html) and [this](https://serverless.com/framework/docs/providers/aws/events/sqs/).
