@@ -37,7 +37,7 @@ The code follows the "Hexagonal Architecture" pattern, also know as "Ports and A
 - An AWS account
 - AWS CLI
 - Go 1.12.x
-- Node 10.15.x (required for the Serverless Framework, which is intalled via NPM)
+- Node 10.15.x (required for the Serverless Framework, which is installed via NPM)
 - Serverless Framework >=1.28.0
 
 
